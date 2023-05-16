@@ -35,3 +35,5 @@ function parseElfCalorieData(elfCalorieData: string) {
 }
 
 parseElfCalorieData(exampleInput);
+
+// to test code run `npx tsc; node ./dist/part1_solution.js`
