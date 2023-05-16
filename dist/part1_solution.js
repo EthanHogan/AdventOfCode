@@ -29,3 +29,4 @@ function parseElfCalorieData(elfCalorieData) {
     return mostTotalCalories;
 }
 parseElfCalorieData(exampleInput);
+// to test code run `npx tsc; node ./dist/part1_solution.js`
