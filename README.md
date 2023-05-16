@@ -1,6 +1,6 @@
 # [Advent of Code](https://adventofcode.com/) 
 
-My advent of code solutions
+My Advent of Code solutions.
 
 ## Example for how to compile TS files into JS files, then run js file
 
