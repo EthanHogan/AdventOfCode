@@ -13,20 +13,20 @@ class ElfAssignments {
 }
 
 function getPairsWhereOneFullyContainsTheOther(input: string): number {
-  let totalFullAssignmentOverlaps = 0;
+  let totalAssignmentOverlaps = 0;
   const listOfElfAssignmentTuples =
     parseInputIntoListOfElfAssignmentTuples(input);
   // iterate over list of tuples
   listOfElfAssignmentTuples.forEach((eat) => {
-    // check if ones assignments fully contain the others
+    // check if ones assignments overlaps with the other
     if (doAssignmentsOverlapAtAll(eat[0], eat[1])) {
       // if yes, add to the count
-      totalFullAssignmentOverlaps++;
+      totalAssignmentOverlaps++;
     }
     // if no, continue
   });
 
-  return totalFullAssignmentOverlaps;
+  return totalAssignmentOverlaps;
 }
 
 function doAssignmentsOverlapAtAll(ea1: ElfAssignments, ea2: ElfAssignments) {
