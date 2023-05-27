@@ -7,5 +7,5 @@ My Advent of Code solutions.
 ## Running TypeScript files
 
 ```sh
-ts-node /src/2022/day1/part1_solution.ts
+ts-node ./src/2022/day1/part1_solution.ts
 ```
