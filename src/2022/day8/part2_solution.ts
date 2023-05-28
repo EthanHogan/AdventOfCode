@@ -55,8 +55,8 @@ function parseStringInputIntoHeightMap(strInput: string): HeightMap {
   return heightMap;
 }
 
-function getVisibleTrees(heightMapStr: string) {
-  let amountOfVisibleTrees: number = 0;
+function getHighestScenicScore(heightMapStr: string) {
+  let highestScenicScore = 0;
   const heightMap: HeightMap = parseStringInputIntoHeightMap(heightMapStr);
   //   [
   //     [ 3, 0, 3, 7, 3 ],
@@ -71,56 +71,57 @@ function getVisibleTrees(heightMapStr: string) {
     const currentRow = heightMap[r];
     for (let c = 0; c < currentRow.length; c++) {
       const currentTree: Tree = new Tree(currentRow[c], r, c);
-      const visFromNorth: boolean = isTreeVisible(
+
+      // get the total number of visible trees in each direction
+      const treesVisible_North: number = countVisibleTreesInDirection(
         currentTree,
         heightMap,
         CardinalDirection.NORTH
       );
-      if (visFromNorth) {
-        amountOfVisibleTrees++;
-        continue;
-      }
 
-      const visFromSouth: boolean = isTreeVisible(
+      const treesVisible_South: number = countVisibleTreesInDirection(
         currentTree,
         heightMap,
         CardinalDirection.SOUTH
       );
-      if (visFromSouth) {
-        amountOfVisibleTrees++;
-        continue;
-      }
 
-      const visFromEast: boolean = isTreeVisible(
+      const treesVisible_East: number = countVisibleTreesInDirection(
         currentTree,
         heightMap,
         CardinalDirection.EAST
       );
-      if (visFromEast) {
-        amountOfVisibleTrees++;
-        continue;
-      }
 
-      const visFromWest: boolean = isTreeVisible(
+      const treesVisible_West: number = countVisibleTreesInDirection(
         currentTree,
         heightMap,
         CardinalDirection.WEST
       );
-      if (visFromWest) {
-        amountOfVisibleTrees++;
-        continue;
+
+      // calculate the scenic score
+      const scenicScore =
+        treesVisible_North *
+        treesVisible_South *
+        treesVisible_East *
+        treesVisible_West;
+
+      // check if we have a new high score
+      if (scenicScore > highestScenicScore) {
+        highestScenicScore = scenicScore;
       }
     }
   }
-  return amountOfVisibleTrees;
+  return highestScenicScore;
 }
 
-function isTreeVisible(
+function countVisibleTreesInDirection(
   tree: Tree,
   heightMap: HeightMap,
   fromDirection: CardinalDirection
-) {
-  if (isTreeOnOuterEdge(tree, heightMap, fromDirection)) return true;
+): number {
+  if (isTreeOnOuterEdge(tree, heightMap, fromDirection)) return 0;
+
+  let visibleTrees = 0;
+
   const index_firstTreeToCheck: number = indexOfFirstTreeToCheck(
     tree,
     fromDirection
@@ -131,16 +132,17 @@ function isTreeVisible(
     getIteratorCondition(i, tree, fromDirection, heightMap);
     isIteratorDirectionPostive(i, fromDirection) ? i++ : i--
   ) {
+    visibleTrees++;
     const currentTreeHeight = getCurrentTreeHeightInIteration(
       tree,
       i,
       fromDirection,
       heightMap
     );
-    if (currentTreeHeight >= tree.height) return false;
+    if (currentTreeHeight >= tree.height) break;
   }
 
-  return true;
+  return visibleTrees;
 }
 
 function isTreeOnOuterEdge(
@@ -230,7 +232,7 @@ function getCurrentTreeHeightInIteration(
   currentIndex: number,
   fromDirection: CardinalDirection,
   heightMap: HeightMap
-) {
+): number {
   switch (fromDirection) {
     case CardinalDirection.NORTH:
       return heightMap[currentIndex][tree.colIndex];
@@ -241,8 +243,8 @@ function getCurrentTreeHeightInIteration(
     case CardinalDirection.WEST:
       return heightMap[tree.rowIndex][currentIndex];
     default:
-      null;
+      return null;
   }
 }
 
-console.log("Answer: ", getVisibleTrees(sampleInput));
+console.log("Answer: ", getHighestScenicScore(sampleInput));
