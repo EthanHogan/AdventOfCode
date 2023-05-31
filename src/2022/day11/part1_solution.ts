@@ -72,12 +72,14 @@ const OperationVerbs = {
     "/": "divided"
 }
 
+type Operator = "*" | "+" | "-" | "/" | "%";
+
 class Operation {
-    operator: string; // *, +, -, /
+    operator: Operator; // *, +, -, /
     value: number;
     isValOldVal: boolean = false;
 
-    constructor(operatorSymbol: string, valueToDoOperationWith: number = null, isValueTheOldValueOfTheItem: boolean = false) {
+    constructor(operatorSymbol: Operator, valueToDoOperationWith: number = null, isValueTheOldValueOfTheItem: boolean = false) {
         this.operator = operatorSymbol;
         this.value = valueToDoOperationWith;
         this.isValOldVal = isValueTheOldValueOfTheItem;
@@ -207,9 +209,10 @@ function parseInputNotesIntoMonkeys(inputNotes: string): Monkey[] {
         const startingItems = startingItemStrs.map((sis) => parseInt(sis));
 
         const operationTuple = monkeyLines[2].replace("Operation: new = old ", "").split(" ");
-        const operationOperator: string = operationTuple[0];
-        let operationValue = parseInt(operationTuple[1]);
-        let shouldUseOldValueForOperation = isNaN(operationValue);
+        const operationOperator: Operator = operationTuple[0] as Operator;
+        const operationValue = parseInt(operationTuple[1]);
+        const shouldUseOldValueForOperation = isNaN(operationValue);
+
         let operation: Operation = null;
         if (shouldUseOldValueForOperation) {
             operation = new Operation(operationOperator, null, shouldUseOldValueForOperation);
