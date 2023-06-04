@@ -1,8 +1,13 @@
 {
   "devDependencies": {
+    "@types/jest": "^29.5.2",
     "@types/node": "^20.2.1",
+    "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.2",
     "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
